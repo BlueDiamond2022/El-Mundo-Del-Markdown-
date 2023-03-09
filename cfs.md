@@ -18,4 +18,4 @@ El motivo de que no pongo más texto es porque estoy aprendiendo programación p
 | alias up= sudo apt-get update                              |
 | alias upg= sudo apt-get upgrade                            |
 > http://localhost:8080/cfs/index.html
->npx @11/elventy --serve
+>npx @11/elventy --serve.
