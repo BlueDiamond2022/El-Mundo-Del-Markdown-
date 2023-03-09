@@ -1,0 +1,88 @@
+<h1>Contributing</h1>
+<p>:+1::tada: First off, thanks for taking the time to contribute to <code>nvm</code>! :tada::+1:</p>
+<p>We love pull requests and issues, they're our favorite.</p>
+<p>The following is a set of guidelines for contributing to <code>nvm</code> managed by <a href="https://github.com/ljharb">@LJHarb</a>, which is hosted on GitHub. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.</p>
+<p>However, before submitting, please review the following:</p>
+<h1>How Can I Contribute?</h1>
+<p>There are lots of ways to get involved. Here are some suggestions of things we'd love some help with.</p>
+<h2>Resolving existing issues</h2>
+<p>You can consider helping out with issues already requiring attention - look for a &quot;help wanted&quot; label.</p>
+<h3>How Do I Submit a (Good) Bug Report? :bug:</h3>
+<p>Explain the problem and include additional details to help maintainers reproduce the problem:</p>
+<ul>
+<li>
+<p><strong>Use a clear and descriptive title</strong> for the issue to identify the problem.</p>
+</li>
+<li>
+<p><strong>Describe the exact steps which reproduce the problem</strong> in as many details as possible. For example, start by explaining which command exactly you used in the terminal. When listing steps, <strong>don't just say what you did, but explain how you did it</strong>. For example, if you moved the cursor to the end of a line, explain if you used the mouse, or a keyboard shortcut or a command, and if so which one?</p>
+</li>
+<li>
+<p><strong>Provide specific examples to demonstrate the steps</strong>. Include links to files or Github projects, or copy/pasteable snippets, which you use in those examples. If you're providing snippets in the issue, use <a href="https://help.github.com/articles/markdown-basics/#multiple-lines">Markdown code blocks</a>.</p>
+</li>
+<li>
+<p><strong>Describe the behavior you observed after following the steps</strong> and point out what exactly is the problem with that behavior.</p>
+</li>
+<li>
+<p><strong>Explain which behavior you expected to see instead and why.</strong></p>
+</li>
+<li>
+<p><strong>Provide as much context as possible</strong> in order to help others verify and ultimately fix the issue. This includes giving us as much details as possible about your environment, so we can more easily confirm the problem.</p>
+</li>
+</ul>
+<h2>Documentation</h2>
+<p>We are happy to welcome contributions from anyone willing to improve documentation by adding missing information or making it more consistent and coherent.</p>
+<h1>Dev Environment</h1>
+<p>Please refer to the <a href="README.md">README</a> for complete instructions how to install, update, as well as troubleshoot <code>nvm</code> in your environment depending on your Operating System.</p>
+<h1>Style Guide / Coding conventions</h1>
+<h3>Pull requests</h3>
+<h4>Before creating a pull request</h4>
+<ul>
+<li>Please include tests. Changes with tests will be merged very quickly.</li>
+<li>Please manually confirm that your changes work in <code>bash</code>, <code>sh</code>/<code>dash</code>, <code>ksh</code>, and <code>zsh</code>. Fast tests do run in these shells, but it's nice to manually verify also.</li>
+<li>Please maintain consistent whitespace - 2-space indentation, trailing newlines in all files, etc.</li>
+<li>Any time you make a change to your PR, please rebase freshly on top of the default branch. Nobody likes merge commits.</li>
+</ul>
+<p>Even if you don't have all of these items covered, please still feel free to submit a PR/issue! Someone else may be inspired and volunteer to complete it for you.</p>
+<h4>How to create a pull request</h4>
+<p>Create a new branch</p>
+<pre><code>git checkout -b issue1234
+</code></pre>
+<p>Commit the changes to your branch, including a coherent commit message that follows our <a href="#commit-messages">standards</a></p>
+<pre><code>git commit -a
+</code></pre>
+<p>Before sending the pull request, make sure your code is running on the latest available code by rebasing onto the upstream source</p>
+<pre><code>git fetch upstream
+git rebase upstream/main
+</code></pre>
+<p>Verify your changes</p>
+<pre><code>npm test
+# or
+npm run tests-only
+</code></pre>
+<p>Push your changes</p>
+<pre><code>git push origin issue1234
+</code></pre>
+<p>Send the <a href="https://docs.github.com/en/pull-requests">pull request</a>, make requested changes, and get merged.</p>
+<h3>Commit Messages</h3>
+<ul>
+<li>Limit the first line of the commit message (message summary) to 72 characters or less.</li>
+<li>Use the present tense (&quot;Add feature&quot; not &quot;Added feature&quot;) and imperative mood (&quot;Move cursor to...&quot; not &quot;Moves cursor to...&quot;) when providing a description of what you did.</li>
+<li>If your PR addresses an issue, reference it in the body of the commit message.</li>
+<li>See the rest of the conventions <a href="https://gist.github.com/ljharb/772b0334387a4bee89af24183114b3c7">here</a></li>
+</ul>
+<h4>Commit message example</h4>
+<pre><code>[Tag]: Short description of what you did
+
+Longer description here if necessary
+
+Fixes #1234
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong>  Add co-authors to your commit message for commits with multiple authors</p>
+</blockquote>
+<pre><code>Co-authored-by: Name Here &lt;email@here&gt;
+</code></pre>
+<h1>Code of Conduct</h1>
+<p><a href="https://github.com/nvm-sh/nvm/blob/HEAD/CODE_OF_CONDUCT.md">Code of Conduct</a></p>
+<h1>Where can I ask for help?</h1>
+<p>If you have any questions, please contact <a href="mailto:ljharb@gmail.com">@LJHarb</a>.</p>

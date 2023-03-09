@@ -1,0 +1,147 @@
+<h1>Markdown Language Server</h1>
+<blockquote>
+<p><strong>❗ Import</strong> This is still in development. While the language server is being used by VS Code, it has not yet been tested with other clients.</p>
+</blockquote>
+<p>The Markdown language server powers VS Code's built-in markdown support, providing tools for writing and browsing Markdown files. It runs as a separate executable and implements the <a href="https://microsoft.github.io/language-server-protocol/overview">language server protocol</a>.</p>
+<p>This server uses the <a href="https://github.com/microsoft/vscode-markdown-languageservice">Markdown Language Service</a> to implement almost all of the language features. You can use that library if you need a library for working with Markdown instead of a full language server.</p>
+<h2>Server capabilities</h2>
+<ul>
+<li>
+<p><a href="https://microsoft.github.io/language-server-protocol/specification#textDocument_completion">Completions</a> for Markdown links.</p>
+</li>
+<li>
+<p><a href="https://microsoft.github.io/language-server-protocol/specification#textDocument_foldingRange">Folding</a> of Markdown regions, block elements, and header sections.</p>
+</li>
+<li>
+<p><a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocument_selectionRange">Smart selection</a> for inline elements, block elements, and header sections.</p>
+</li>
+<li>
+<p><a href="https://microsoft.github.io/language-server-protocol/specification#textDocument_documentSymbol">Document Symbols</a> for quick navigation to headers in a document.</p>
+</li>
+<li>
+<p><a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#workspace_symbol">Workspace Symbols</a> for quick navigation to headers in the workspace</p>
+</li>
+<li>
+<p><a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocument_documentLink">Document links</a> for making Markdown links in a document clickable.</p>
+</li>
+<li>
+<p><a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocument_references">Find all references</a> to headers and links across all Markdown files in the workspace.</p>
+</li>
+<li>
+<p><a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocument_definition">Go to definition</a> from links to headers or link definitions.</p>
+</li>
+<li>
+<p><a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocument_rename">Rename</a> of headers and links across all Markdown files in the workspace.</p>
+</li>
+<li>
+<p>Find all references to a file. Uses a custom <code>markdown/getReferencesToFileInWorkspace</code> message.</p>
+</li>
+<li>
+<p><a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocument_codeAction">Code Actions</a></p>
+<ul>
+<li>Organize link definitions source action.</li>
+<li>Extract link to definition refactoring.</li>
+</ul>
+</li>
+<li>
+<p>Updating links when a file is moved / renamed. Uses a custom <code>markdown/getEditForFileRenames</code> message.</p>
+</li>
+<li>
+<p><a href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocument_pullDiagnostics">Pull diagnostics (validation)</a> for links.</p>
+</li>
+</ul>
+<h2>Client requirements</h2>
+<h3>Initialization options</h3>
+<p>The client can send the following initialization options to the server:</p>
+<ul>
+<li><code>markdownFileExtensions</code> Array file extensions that should be considered as Markdown. These should not include the leading <code>.</code>. For example: <code>['md', 'mdown', 'markdown']</code>.</li>
+</ul>
+<h3>Settings</h3>
+<p>Clients may send a <code>workspace/didChangeConfiguration</code> notification to notify the server of settings changes.
+The server supports the following settings:</p>
+<ul>
+<li><code>markdown</code>
+<ul>
+<li>
+<p><code>suggest</code></p>
+<ul>
+<li><code>paths</code>
+<ul>
+<li><code>enabled</code> — Enable/disable path suggestions.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>occurrencesHighlight</code></p>
+<ul>
+<li><code>enabled</code> — Enable/disable highlighting of link occurrences.</li>
+</ul>
+</li>
+<li>
+<p><code>validate</code></p>
+<ul>
+<li><code>enabled</code> — Enable/disable all validation.</li>
+<li><code>referenceLinks</code>
+<ul>
+<li><code>enabled</code> — Enable/disable validation of reference links: <code>[text][ref]</code></li>
+</ul>
+</li>
+<li><code>fragmentLinks</code>
+<ul>
+<li><code>enabled</code> — Enable/disable validation of links to fragments in the current files: <code>[text](#head)</code></li>
+</ul>
+</li>
+<li><code>fileLinks</code>
+<ul>
+<li><code>enabled</code> — Enable/disable validation of links to file in the workspace.</li>
+<li><code>markdownFragmentLinks</code> — Enable/disable validation of links to headers in other Markdown files. Use <code>inherit</code> to inherit the <code>fragmentLinks</code> setting.</li>
+</ul>
+</li>
+<li><code>ignoredLinks</code> — Array of glob patterns for files that should not be validated.</li>
+<li><code>unusedLinkDefinitions</code>
+<ul>
+<li><code>enabled</code> — Enable/disable validation of unused link definitions.</li>
+</ul>
+</li>
+<li><code>duplicateLinkDefinitions</code>
+<ul>
+<li><code>enabled</code> — Enable/disable validation of duplicated link definitions.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Custom requests</h3>
+<p>To support all of the features of the language server, the client needs to implement a few custom request types. The definitions of these request types can be found in <a href="./src/protocol.ts"><code>protocol.ts</code></a></p>
+<h4><code>markdown/parse</code></h4>
+<p>Get the tokens for a Markdown file. Clients are expected to use <a href="https://github.com/markdown-it/markdown-it">Markdown-it</a> for this.</p>
+<p>We require that clients bring their own version of Markdown-it so that they can customize/extend Markdown-it.</p>
+<h4><code>markdown/fs/readFile</code></h4>
+<p>Read the contents of a file in the workspace.</p>
+<h4><code>markdown/fs/readDirectory</code></h4>
+<p>Read the contents of a directory in the workspace.</p>
+<h4><code>markdown/fs/stat</code></h4>
+<p>Check if a given file/directory exists in the workspace.</p>
+<h4><code>markdown/fs/watcher/create</code></h4>
+<p>Create a file watcher. This is needed for diagnostics support.</p>
+<h4><code>markdown/fs/watcher/delete</code></h4>
+<p>Delete a previously created file watcher.</p>
+<h4><code>markdown/findMarkdownFilesInWorkspace</code></h4>
+<p>Get a list of all markdown files in the workspace.</p>
+<h2>Contribute</h2>
+<p>The source code of the Markdown language server can be found in the <a href="https://github.com/microsoft/vscode">VSCode repository</a> at <a href="https://github.com/microsoft/vscode/tree/master/extensions/markdown-language-features/server">extensions/markdown-language-features/server</a>.</p>
+<p>File issues and pull requests in the <a href="https://github.com/microsoft/vscode/issues">VSCode GitHub Issues</a>. See the document <a href="https://github.com/microsoft/vscode/wiki/How-to-Contribute">How to Contribute</a> on how to build and run from source.</p>
+<p>Most of the functionality of the server is located in libraries:</p>
+<ul>
+<li><a href="https://github.com/microsoft/vscode-markdown-languageservice">vscode-markdown-languageservice</a> contains the implementation of all features as a reusable library.</li>
+<li><a href="https://github.com/microsoft/vscode-languageserver-node">vscode-languageserver-node</a> contains the implementation of language server for NodeJS.</li>
+</ul>
+<p>Help on any of these projects is very welcome.</p>
+<h2>Code of Conduct</h2>
+<p>This project has adopted the <a href="https://opensource.microsoft.com/codeofconduct/">Microsoft Open Source Code of Conduct</a>. For more information see the <a href="https://opensource.microsoft.com/codeofconduct/faq/">Code of Conduct FAQ</a> or contact <a href="mailto:opencode@microsoft.com">opencode@microsoft.com</a> with any additional questions or comments.</p>
+<h2>License</h2>
+<p>Copyright (c) Microsoft Corporation. All rights reserved.</p>
+<p>Licensed under the <a href="https://github.com/microsoft/vscode/blob/master/LICENSE.txt">MIT</a> License.</p>

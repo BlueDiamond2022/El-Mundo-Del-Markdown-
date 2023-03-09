@@ -1,0 +1,20 @@
+<h1>Git static contributions and remote repository picker</h1>
+<p><strong>Notice:</strong> This extension is bundled with Visual Studio Code. It can be disabled but not uninstalled.</p>
+<h2>Features</h2>
+<p>Git static contributions and remote repository picker.</p>
+<h2>API</h2>
+<p>The Git extension exposes an API, reachable by any other extension.</p>
+<ol>
+<li>
+<p>Copy <code>src/api/git-base.d.ts</code> to your extension's sources;</p>
+</li>
+<li>
+<p>Include <code>git-base.d.ts</code> in your extension's compilation.</p>
+</li>
+<li>
+<p>Get a hold of the API with the following snippet:</p>
+<pre><code class="language-ts">const gitBaseExtension = vscode.extensions.getExtension&lt;GitBaseExtension&gt;('vscode.git-base').exports;
+const git = gitBaseExtension.getAPI(1);
+</code></pre>
+</li>
+</ol>
